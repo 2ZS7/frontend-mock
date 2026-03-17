@@ -29,18 +29,29 @@ function App() {
   }, [])
 
   return (
-    <div className="App">
-      <h1>Сессии</h1>
-      {loading ? (
-        <p>Загрузка...</p>
-      ) : (
-        <ul>
-          {sessions.map((session) => (
-            <li key={session._id}>
-              <strong>{session.name}</strong> - {session.status} (создано: {new Date(session.created_at).toLocaleString()})
-            </li>
-          ))}
-        </ul>
+    <div style={{ padding: '20px' }}>
+      <h1>Stateful Mock: Dashboard</h1>
+      {loading ? <p>Загрузка...</p> : (
+        <table border={1} style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr>
+              <th>ID сессии</th>
+              <th>Имя</th>
+              <th>Статус</th>
+              <th>Дата создания</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sessions.map((session) => (
+              <tr key={session._id}>
+                <td>{session._id}</td>
+                <td>{session.name}</td>
+                <td>{session.status}</td>
+                <td>{new Date(session.created_at).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   )
