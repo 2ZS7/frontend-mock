@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Временно! Пустые файлы
+src/components/Header.tsx
+src/components/Loader.tsx
+src/components/StatusBadge.tsx
+src/services/api.ts
