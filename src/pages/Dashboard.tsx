@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import './Dashboard.css';
 
-// Описываем интерфейс данных
 export interface Session {
     _id: string;
     name: string;
@@ -27,30 +27,30 @@ export default function Dashboard() {
     }, []);
 
     return (
-        <div style={{ padding: '20px' }}>
-            <h1>Stateful Mock: Dashboard</h1>
+        <div className="dashboard-container">
+            <h1 className="dashboard-title">Stateful Mock: Dashboard</h1>
+
             {loading ? <p>Загрузка...</p> : (
-                <table border={1} style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                    <thead style={{ backgroundColor: '#f0f0f0' }}>
+                <table className="dashboard-table">
+                    <thead>
                         <tr>
-                            <th style={{ padding: '10px' }}>Имя сессии (Логи)</th>
-                            <th style={{ padding: '10px' }}>ID сессии</th>
-                            <th style={{ padding: '10px' }}>Статус</th>
-                            <th style={{ padding: '10px' }}>Дата создания</th>
+                            <th>Имя сессии (Логи)</th>
+                            <th>ID сессии</th>
+                            <th>Статус</th>
+                            <th>Дата создания</th>
                         </tr>
                     </thead>
                     <tbody>
                         {sessions.map((session) => (
                             <tr key={session._id}>
-                                <td style={{ padding: '10px' }}>
-                                    {/* Вот здесь магия: Имя сессии стало ссылкой на логи */}
-                                    <Link to={`/logs/${session._id}`} style={{ color: '#0066cc', fontWeight: 'bold' }}>
+                                <td>
+                                    <Link to={`/logs/${session._id}`} className="session-link">
                                         {session.name}
                                     </Link>
                                 </td>
-                                <td style={{ padding: '10px' }}>{session._id}</td>
-                                <td style={{ padding: '10px' }}>{session.status}</td>
-                                <td style={{ padding: '10px' }}>{new Date(session.created_at).toLocaleString()}</td>
+                                <td>{session._id}</td>
+                                <td>{session.status}</td>
+                                <td>{new Date(session.created_at).toLocaleString()}</td>
                             </tr>
                         ))}
                     </tbody>

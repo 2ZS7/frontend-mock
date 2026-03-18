@@ -1,0 +1,43 @@
+.inspector-container {
+    padding: 20px;
+    font-family: sans-serif;
+}
+
+.back-link {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 16px;
+    color: #0066cc;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.inspector-title {
+    color: #333;
+    margin-bottom: 20px;
+    word-wrap: break-word;
+}
+
+.logs-box {
+    background: #282c34;
+    color: #abb2bf;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logs-pre {
+    margin: 0;
+    font-size: 14px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.empty-logs {
+    color: #666;
+    font-style: italic;
+}

@@ -1,0 +1,46 @@
+.dashboard-container {
+    padding: 20px;
+    font-family: sans-serif;
+}
+
+.dashboard-title {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-table th {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    font-weight: 600;
+    color: #444;
+}
+
+.dashboard-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.dashboard-table tr:hover {
+    background-color: #f1f5f9;
+}
+
+.session-link {
+    color: #0066cc;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.session-link:hover {
+    text-decoration: underline;
+    color: #004c99;
+}
