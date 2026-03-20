@@ -1,0 +1,16 @@
+// В "больших" проектах запросы (axios.get('http://localhost:8000/...')) 
+// не пишут прямо внутри страниц. Их выносят в папку services, 
+// чтобы, если у бэкенда поменяется адрес или порт, 
+// программисту нужно было поменять его только в одном месте, 
+// а не в двадцати файлах.
+// У нас запросов всего два, поэтому мы оставили их внутри страниц для скорости.
+
+import axios from 'axios';
+
+const api = axios.create({ baseURL: 'http://localhost:8000' });
+
+export const apiService = {
+    getRules: () => api.get('/definitions'),
+    createRule: (data: any) => api.post('/definitions', data),
+    deleteRule: (id: string) => api.delete(`/definitions/${id}`),
+};
