@@ -14,4 +14,9 @@ export const apiService = {
     createRules: (data: any) => api.post('/definitions', data),
     updateRules: (id: string, data: any) => api.put(`/definitions/${id}`, data),
     deleteRules: (id: string) => api.delete(`/definitions/${id}`),
+
+    // Добавляем сессии:
+    getSessions: () => api.get('/sessions'),
+    createSession: (name: string) => api.post('/sessions', { name }),
+    deleteSession: (id: string) => api.delete(`/sessions/${id}`),
 };
