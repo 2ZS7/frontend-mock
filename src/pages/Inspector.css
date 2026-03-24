@@ -144,3 +144,10 @@
     border-radius: 6px;
     overflow-x: auto;
 }
+
+.details-summary {
+    cursor: pointer;
+    color: #0066cc;
+    margin-bottom: 10px;
+    font-weight: 500;
+}

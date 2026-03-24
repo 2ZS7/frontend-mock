@@ -19,4 +19,6 @@ export const apiService = {
     getSessions: () => api.get('/sessions'),
     createSession: (name: string) => api.post('/sessions', { name }),
     deleteSession: (id: string) => api.delete(`/sessions/${id}`),
+
+    getLogs: (sessionId: string) => api.get(`/logs/${sessionId}`),
 };

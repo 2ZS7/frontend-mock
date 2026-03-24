@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import axios from 'axios';
+import { apiService } from '../services/api';
 import './Inspector.css';
 
 // Описываем структуру лога, чтобы TS нам помогал
@@ -21,54 +21,41 @@ interface RequestLog {
 }
 
 export default function Inspector() {
-    const { session_id } = useParams();
+    const { session_id } = useParams<{ session_id: string }>();
     const [logs, setLogs] = useState<RequestLog[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        axios.get(`http://localhost:8000/logs/${session_id}`)
-            .then((res) => {
-                setLogs(res.data);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
-            });
-    }, [session_id]);
+    const loadLogs = async () => {
+        if (!session_id) return;
+        try {
+            const res = await apiService.getLogs(session_id);
+            setLogs(res.data);
+        } catch (err) {
+            console.error("Ошибка при загрузке логов:", err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => { loadLogs(); }, [session_id]);
 
     // Вспомогательная функция для выбора цвета метода
-    const getMethodClass = (method: string) => {
-        const validMethods = ['GET', 'POST', 'PUT', 'DELETE'];
-        return validMethods.includes(method.toUpperCase())
-            ? `method-${method.toUpperCase()}`
-            : 'method-DEFAULT';
-    };
+    const getMethodClass = (method: string) => `method-${method.toUpperCase()}`;
+    const getStatusClass = (code: number) => code >= 200 && code < 400 ? 'status-success' : 'status-error';
 
-    // Вспомогательная функция для подсветки статуса (зеленый - ок, красный - ошибка)
-    const getStatusClass = (code: number) => {
-        return code >= 200 && code < 400 ? 'status-success' : 'status-error';
-    };
 
     return (
         <div className="inspector-container">
-            <Link to="/" className="back-link">
-                ⬅ Назад к списку сессий
-            </Link>
+            <Link to="/" className="back-link">⬅ Назад к списку сессий</Link>
 
-            <h2 className="inspector-title">Инспектор логов сессии</h2>
-            <p style={{ color: '#666', marginBottom: '20px', fontFamily: 'monospace' }}>ID: {session_id}</p>
+            <h2 className="inspector-title">Инспектор логов: {session_id}</h2>
 
-            {loading ? (
-                <p>Загрузка логов...</p>
-            ) : logs.length === 0 ? (
-                <p>Для этой сессии пока нет логов.</p>
+            {loading ? <p>Загрузка логов...</p> : logs.length === 0 ? (
+                <p className="empty-logs">Для этой сессии пока нет логов.</p>
             ) : (
                 <div className="logs-list">
                     {logs.map((log) => (
                         <div key={log._id} className="log-card">
-
-                            {/* Шапка карточки: Метод, Путь и Статус */}
                             <div className="log-header">
                                 <div className="log-header-left">
                                     <span className={`method-badge ${getMethodClass(log.request.method)}`}>
@@ -81,7 +68,6 @@ export default function Inspector() {
                                 </div>
                             </div>
 
-                            {/* Тело карточки: Время, Сработавшее правило и полный JSON */}
                             <div className="log-body">
                                 <div className="log-meta">
                                     <span>Время: {new Date(log.timestamp).toLocaleTimeString()}</span>
@@ -90,17 +76,13 @@ export default function Inspector() {
                                     </span>
                                 </div>
 
-                                {/* HTML тег details позволяет скрыть длинный JSON под спойлер, чтобы не засорять экран */}
                                 <details>
-                                    <summary style={{ cursor: 'pointer', color: '#0066cc', marginBottom: '10px' }}>
-                                        Показать полный JSON
-                                    </summary>
+                                    <summary className="details-summary">Показать полный JSON</summary>
                                     <pre className="logs-pre">
                                         {JSON.stringify(log, null, 2)}
                                     </pre>
                                 </details>
                             </div>
-
                         </div>
                     ))}
                 </div>
