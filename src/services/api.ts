@@ -12,5 +12,6 @@ const api = axios.create({ baseURL: 'http://localhost:8000' });
 export const apiService = {
     getRules: () => api.get('/definitions'),
     createRules: (data: any) => api.post('/definitions', data),
+    updateRules: (id: string, data: any) => api.put(`/definitions/${id}`, data),
     deleteRules: (id: string) => api.delete(`/definitions/${id}`),
 };
