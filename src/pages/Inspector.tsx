@@ -13,6 +13,7 @@ interface RequestLog {
     };
     engine_decision: {
         matched_rule_id: string;
+        matched_rule_name: string;
     };
     response: {
         status_code: number;
@@ -85,7 +86,7 @@ export default function Inspector() {
                                 <div className="log-meta">
                                     <span>Время: {new Date(log.timestamp).toLocaleTimeString()}</span>
                                     <span>
-                                        Правило: <span className="log-rule">{log.engine_decision.matched_rule_id}</span>
+                                        Правило: <span className="log-rule-name">{log.engine_decision.matched_rule_name}</span>
                                     </span>
                                 </div>
 
