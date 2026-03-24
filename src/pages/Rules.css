@@ -1,0 +1,12 @@
+.json-textarea {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    padding: 8px;
+    border-radius: 6px;
+    font-family: monospace;
+    /* Моноширинный шрифт для JSON */
+    min-height: 100px;
+    /* Начальная высота */
+    resize: vertical;
+    /* Разрешаем растягивать только по вертикали */
+}

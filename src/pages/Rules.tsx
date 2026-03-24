@@ -15,6 +15,7 @@ export default function Rules() {
         response_payload: {},
         state_logic: { action: 'insert', collection_name: '' }
     });
+    const [payloadStr, setPayloadStr] = useState('{}');
 
 
     const fetchRules = async () => {
@@ -70,15 +71,16 @@ export default function Rules() {
                         <option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option>
                     </select>
                     <input className="w-full border p-2 mb-3 rounded" value={formData.path_pattern} placeholder="Path (regex)" onChange={(e) => setFormData({ ...formData, path_pattern: e.target.value })} />
-                    <input
-                        type="number"
-                        className="w-full border p-2 mb-4 rounded"
-                        placeholder="Приоритет (число)"
-                        value={formData.priority}
-                        onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) || 0 })}
-                    />
-                    {/* Поля для конфигурации ответа */}
+
+
                     <div className="grid grid-cols-2 gap-4 mb-4">
+                        <input
+                            type="number"
+                            className="w-full border p-2 mb-4 rounded"
+                            placeholder="Приоритет (число)"
+                            value={formData.priority}
+                            onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) })}
+                        />
                         <input
                             type="number"
                             className="border p-2 rounded"
@@ -86,20 +88,21 @@ export default function Rules() {
                             value={formData.status_code}
                             onChange={(e) => setFormData({ ...formData, status_code: parseInt(e.target.value) || 200 })}
                         />
-                        <input
-                            className="border p-2 rounded"
-                            placeholder="JSON Response (Payload)"
-                            value={JSON.stringify(formData.response_payload)}
-                            onChange={(e) => {
-                                try {
-                                    // Пытаемся превратить строку в JSON объект
-                                    setFormData({ ...formData, response_payload: JSON.parse(e.target.value) })
-                                } catch (err) {
-                                    // Если JSON кривой — ничего не делаем, либо можно добавить индикатор ошибки
-                                }
-                            }}
-                        />
                     </div>
+                    <textarea
+                        className="json-textarea mb-3"
+                        placeholder='{"key": "value"}'
+                        value={payloadStr}
+                        onChange={(e) => {
+                            setPayloadStr(e.target.value);
+                            try {
+                                const parsed = JSON.parse(e.target.value);
+                                setFormData({ ...formData, response_payload: parsed });
+                            } catch (err) {
+                                // Игнорируем ошибку парсинга, пока пользователь печатает
+                            }
+                        }}
+                    />
                     {/* Переключатель Stateful */}
                     <label className="flex items-center gap-2 mb-4">
                         <input type="checkbox" checked={isStateful} onChange={(e) => setIsStateful(e.target.checked)} />
