@@ -9,6 +9,10 @@ export interface Session {
     name: string;
     status: string;
     created_at: string;
+    metrics?: {
+        total_requests: number;
+        failed_requests: number;
+    };
 }
 
 export default function Dashboard() {
@@ -66,12 +70,14 @@ export default function Dashboard() {
         );
     };
 
-    // Выбрать все отфильтрованные сессии
+    // Выбрать только АКТИВНЫЕ отфильтрованные сессии
     const handleSelectAll = (filteredList: Session[]) => {
-        if (selectedIds.length === filteredList.length) {
+        const activeSessions = filteredList.filter(s => s.status === 'active');
+
+        if (selectedIds.length === activeSessions.length) {
             setSelectedIds([]);
         } else {
-            setSelectedIds(filteredList.map(s => s._id));
+            setSelectedIds(activeSessions.map(s => s._id));
         }
     };
 
@@ -130,7 +136,7 @@ export default function Dashboard() {
                 </div>
             )}
 
-            {loading ? <p>Загрузка сессий...</p> : (
+            {loading ? <p>Загрузка...</p> : (
                 <table className="dashboard-table">
                     <thead>
                         <tr>
@@ -145,6 +151,9 @@ export default function Dashboard() {
                             <th>Имя сессии (Логи)</th>
                             <th>ID сессии</th>
                             <th>Статус</th>
+                            {/* ДОБАВИЛИ КОЛОНКИ В ШАПКУ */}
+                            <th>Всего запросов</th>
+                            <th>Ошибки</th>
                             <th>Дата создания</th>
                             <th className="w-24">Действие</th>
                         </tr>
@@ -156,6 +165,8 @@ export default function Dashboard() {
                                     <input
                                         type="checkbox"
                                         className="cursor-pointer"
+                                        // ПОЧИНИЛИ: Чекбокс заблокирован, если сессия finished
+                                        disabled={session.status === 'finished'}
                                         checked={selectedIds.includes(session._id)}
                                         onChange={() => handleSelectSession(session._id)}
                                     />
@@ -171,6 +182,10 @@ export default function Dashboard() {
                                         {session.status.toUpperCase()}
                                     </span>
                                 </td>
+                                {/* ДОБАВИЛИ ВЫВОД МЕТРИК В СТРОКИ */}
+                                <td className="font-semibold">{session.metrics?.total_requests ?? 0}</td>
+                                <td className="font-semibold text-red-600">{session.metrics?.failed_requests ?? 0}</td>
+
                                 <td>{new Date(session.created_at).toLocaleString('ru-RU')}</td>
                                 <td>
                                     {session.status === 'active' && (

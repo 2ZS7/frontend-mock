@@ -139,7 +139,7 @@ export default function Inspector() {
                                         <div className="log-meta">
                                             <span>Время: {new Date(log.timestamp).toLocaleTimeString()}</span>
                                             <span>
-                                                Правило: <span className="log-rule-name">{log.engine_decision.matched_rule_name}</span>
+                                                Правило: <span className="log-rule-name">{log.engine_decision?.matched_rule_name || "no_rule"}</span>
                                             </span>
                                         </div>
 
