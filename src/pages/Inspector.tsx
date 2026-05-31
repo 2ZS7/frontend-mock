@@ -55,9 +55,9 @@ export default function Inspector() {
         const fullLogJsonString = JSON.stringify(log).toLowerCase();
 
         const matchesSearch =
-            log.request.path.toLowerCase().includes(searchLower) ||
-            log.request.method.toLowerCase().includes(searchLower) ||
-            log.engine_decision.matched_rule_name.toLowerCase().includes(searchLower) ||
+            (log.request?.path?.toLowerCase() || "").includes(searchLower) ||
+            (log.request?.method?.toLowerCase() || "").includes(searchLower) ||
+            (log.engine_decision?.matched_rule_name?.toLowerCase() || "").includes(searchLower) ||
             fullLogJsonString.includes(searchLower);
 
         return matchesSearch;
