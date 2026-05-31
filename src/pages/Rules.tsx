@@ -84,7 +84,11 @@ export default function Rules() {
                         <div>
                             <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Метод</label>
                             <select className="w-full border border-gray-300 p-2 rounded h-10 bg-white" value={formData.method} onChange={(e) => setFormData({ ...formData, method: e.target.value })}>
-                                <option>GET</option><option>POST</option><option>PUT</option><option>DELETE</option>
+                                <option>GET</option>
+                                <option>POST</option>
+                                <option>PUT</option>
+                                <option>PATCH</option>
+                                <option>DELETE</option>
                             </select>
                         </div>
                         <div>

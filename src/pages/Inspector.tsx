@@ -63,7 +63,12 @@ export default function Inspector() {
         return matchesSearch;
     });
 
-    const getMethodClass = (method: string) => `method-${method.toUpperCase()}`;
+    const getMethodClass = (method: string) => {
+        const validMethods = ['GET', 'POST', 'PUT', 'DELETE', 'PATCH']; // Добавили PATCH
+        return validMethods.includes(method.toUpperCase())
+            ? `method-${method.toUpperCase()}`
+            : 'method-DEFAULT';
+    };
     const getStatusClass = (code: number) => code >= 200 && code < 400 ? 'status-success' : 'status-error';
 
     return (
